@@ -52,4 +52,7 @@ Temporary Items
 #VSCode
 .vscode
 
+#Resources
+resources/**
+
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore,sonarqube,macos

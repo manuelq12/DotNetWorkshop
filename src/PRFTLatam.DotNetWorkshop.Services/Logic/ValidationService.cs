@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PRFTLatam.DotNetWorkshop.Services.Model;
+using PRFTLatam.DotNetWorkshop.Services.Util;
 
 namespace PRFTLatam.DotNetWorkshop.Services.Logic
 {
@@ -9,9 +10,13 @@ namespace PRFTLatam.DotNetWorkshop.Services.Logic
         private Identification id;
         private Notification notification;
 
+        private FileReader fileReader;
+
         public ValidationService(){
             this.id = new Identification("");
             this.notification = new Notification();
+            this.fileReader = new FileReader();
+            this.fileReader.ReadCSV();
         }
 
         public void SetIdentification(String id){
@@ -28,11 +33,11 @@ namespace PRFTLatam.DotNetWorkshop.Services.Logic
                 return notification.GetErrors();
             }
 
-            if(!id.isAtLeastTenCharacters()){
+            if(!id.IsAtLeastTenCharacters()){
                 notification.AddError(ValidationMessage.MinimumLengthError);
             }
 
-            if(!id.isAtMostThirtyTwoCharacters()){
+            if(!id.IsAtMostThirtyTwoCharacters()){
                 notification.AddError(ValidationMessage.MaximumLengthError);
             }
 
@@ -40,6 +45,10 @@ namespace PRFTLatam.DotNetWorkshop.Services.Logic
                 notification.AddError(ValidationMessage.NoHexadecimalNumber);
             }
 
+            if(!id.IsOnTheWhitelist(this.fileReader.GetWhitelistIds())){
+                notification.AddError(ValidationMessage.IdentificationNotFoundOnCSV);
+            }
+            
             return notification.GetErrors();
         }
     }

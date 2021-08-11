@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PRFTLatam.DotNetWorkshop.Services.Model
 {
@@ -15,15 +16,19 @@ namespace PRFTLatam.DotNetWorkshop.Services.Model
         public bool IsNullOrEmptyIdentifier(){
             return string.IsNullOrEmpty(this.id) || string.IsNullOrWhiteSpace(this.id);
         }
-        public bool isAtLeastTenCharacters(){
+        public bool IsAtLeastTenCharacters(){
             return this.id.Length >=10;
         }
-        public bool isAtMostThirtyTwoCharacters(){
+        public bool IsAtMostThirtyTwoCharacters(){
             return this.id.Length <= 32;
         }
         public bool IsHexadecimal(){
             string upperCaseId = this.id.ToUpper();
             return upperCaseId.IndexOfAny(IdentificationConstraints.NotHexadecimalCharacters) != -1;
+        }
+
+        public bool IsOnTheWhitelist(List<String> whitelist){
+            return whitelist.Contains(this.id.ToUpper());
         }
     }
 }
